@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:samuel_martin_c1/utils/notifications.dart';
+import 'package:samuel_martin_c1/widgets/padding.dart';
 import '../widgets/forms.dart';
 import '../utils/validators.dart';
+import 'dart:collection';
 
 class Register extends StatefulWidget {
   const Register({super.key});
@@ -10,26 +13,24 @@ class Register extends StatefulWidget {
 }
 
 class _RegisterState extends State<Register> {
-  String? _title;
-  String? _user;
-  String? _pass;
-  String? _repass;
+  final Map<String, String> _values = HashMap();
+  bool _verified = false;
+  final _formKey = GlobalKey<FormState>();
 
-  void updateCallback(String label, String? value) {
-    setState(() {
-      switch (label) {
-        case "Username":
-          _user = value;
-          break;
-        case "Password":
-          _pass = value;
-          break;
-        case "Retype password":
-          _repass = value;
-          break;
-        default:
-      }
-    });
+  final _value = "title";
+
+  void createUser() {
+    _verified = true;
+    if (!_formKey.currentState!.validate()) {
+      Notifications.showError(context, "Review the form");
+    }
+  }
+
+  void updateCallback(String label, String value) {
+    _values[label] = value;
+    if (_verified) {
+      _formKey.currentState!.validate();
+    }
   }
 
   @override
@@ -49,15 +50,14 @@ class _RegisterState extends State<Register> {
       ),
       body: Center(
         child: Form(
+          key: _formKey,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Center(
                 child: RadioGroup(
-                  onChanged: (value) => setState(() {
-                    _title = value;
-                  }),
-                  groupValue: _title,
+                  onChanged: (value) => {},
+                  groupValue: _value,
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
@@ -75,21 +75,13 @@ class _RegisterState extends State<Register> {
                   ),
                 ),
               ),
-              Padding(
-                padding: EdgeInsetsGeometry.all(8),
-                child: buildFormField(validateNotEmpty,updateCallback, "Username"),
-              ),
-              Padding(
-                padding: EdgeInsetsGeometry.all(8),
-                child: buildFormField(validateNotEmpty,updateCallback, "Password", obscure: true),
-              ),
-              Padding(
-                padding: EdgeInsetsGeometry.all(8),
-                child: buildFormField(
-                  validateNotEmpty,updateCallback,
-                  "Retype password",
-                  obscure: true,
-                ),
+              paddedFormField(updateCallback, "Username"),
+              paddedFormField(updateCallback, "Password", obscure: true,validator: validateStrongPassword),
+              paddedFormField(updateCallback, "Retype password", obscure: true),
+              customPadding(Text("Image")),
+              ElevatedButton(
+                onPressed: createUser,
+                child: Text('Create account'),
               ),
             ],
           ),

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:samuel_martin_c1/utils/validators.dart';
+import 'package:samuel_martin_c1/widgets/buttons.dart';
 import '../services/user_manager.dart';
 import '../utils/notifications.dart';
 import 'profile.dart';
@@ -10,15 +10,15 @@ import 'dart:collection';
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
   @override
-  State<LoginScreen> createState() =>LoginScreenState();
+  State<LoginScreen> createState() => LoginScreenState();
 }
 
 final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey =
     GlobalKey<ScaffoldMessengerState>();
 
 class LoginScreenState extends State<LoginScreen> {
-  final Map<String, String> _values = HashMap(); 
-
+  final Map<String, String> _values = HashMap();
+  var _verified = false;
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -28,9 +28,13 @@ class LoginScreenState extends State<LoginScreen> {
   }
 
   void checkLogin() {
+    _verified = true;
     if (_formKey.currentState!.validate()) {
-      if (UserManager().authenticate(_values["Username"]!, _values["Password"]!)) {
-      Notifications.showMessage(context, "Login successful");
+      if (UserManager().authenticate(
+        _values["Username"]!,
+        _values["Password"]!,
+      )) {
+        Notifications.showMessage(context, "Login successful");
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => const Profile()),
@@ -39,14 +43,15 @@ class LoginScreenState extends State<LoginScreen> {
         Notifications.showError(context, "Invalid username or password");
       }
     } else {
-      Notifications.showError(context, "Error in the form");
+      Notifications.showError(context, "Fill all the missing fields");
     }
   }
 
   void updateCallback(String label, String value) {
-    _values[label]=value;
-    _formKey.currentState!.validate();
-    print('field $label has value $value');
+    _values[label] = value;
+    if (_verified) {
+      _formKey.currentState!.validate();
+    }
   }
 
   @override
@@ -77,27 +82,15 @@ class LoginScreenState extends State<LoginScreen> {
                 padding: const EdgeInsets.all(10.0),
                 child: Image.asset('images/logo.png', width: 300, height: 300),
               ),
-              buildFormField(validateNotEmpty,updateCallback,"Username"),
-              buildFormField(validateNotEmpty,updateCallback,"Password", obscure: true),
-              Padding(
-                padding: const EdgeInsets.all(5.0),
-                child: ElevatedButton(
-                  onPressed: checkLogin,
-                  child: Text('Login'),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(5.0),
-                child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const Register()),
-                    );
-                  },
-                  child: Text('Register'),
-                ),
-              ),
+              paddedFormField(updateCallback, "Username"),
+              paddedFormField(updateCallback, "Password", obscure: true),
+              paddedButton(checkLogin, Text("Login")),
+              paddedButton(() {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const Register()),
+                );
+              }, Text('Register')),
             ],
           ),
         ),

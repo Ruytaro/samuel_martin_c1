@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:samuel_martin_c1/models/user.dart';
-import 'package:samuel_martin_c1/services/user_manager.dart';
-import 'views/login_screen.dart';
+import 'views/login.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -20,6 +18,5 @@ class MyApp extends StatelessWidget {
 }
 
 void main() {
-  UserManager userManager = UserManager();
   runApp(const MyApp());
 }

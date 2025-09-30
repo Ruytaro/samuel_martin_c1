@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 class User {
   String username;
   String password;
-  late Image avatar;
-  late int age;
+  late Image? avatar;
+  late int? age;
 
 
-  User({required this.username, required this.password});
+  User({required this.username, required this.password, this.avatar,  this.age});
   
   set setAvatar(avatar) => this.avatar = avatar;
   set setAge(age) => this.age = age;

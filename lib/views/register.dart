@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../widgets/forms.dart';
+import '../utils/validators.dart';
 
 class Register extends StatefulWidget {
   const Register({super.key});
@@ -10,6 +11,26 @@ class Register extends StatefulWidget {
 
 class _RegisterState extends State<Register> {
   String? _title;
+  String? _user;
+  String? _pass;
+  String? _repass;
+
+  void updateCallback(String label, String? value) {
+    setState(() {
+      switch (label) {
+        case "Username":
+          _user = value;
+          break;
+        case "Password":
+          _pass = value;
+          break;
+        case "Retype password":
+          _repass = value;
+          break;
+        default:
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -20,13 +41,6 @@ class _RegisterState extends State<Register> {
         color: colorScheme.onPrimary,
       ),
     );
-
-    void setTitle(String? value) {
-      setState(() {
-        _title = value;
-        print(_title);
-      });
-    }
 
     return Scaffold(
       appBar: AppBar(
@@ -40,8 +54,10 @@ class _RegisterState extends State<Register> {
             children: [
               Center(
                 child: RadioGroup(
+                  onChanged: (value) => setState(() {
+                    _title = value;
+                  }),
                   groupValue: _title,
-                  onChanged: setTitle,
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
@@ -61,15 +77,19 @@ class _RegisterState extends State<Register> {
               ),
               Padding(
                 padding: EdgeInsetsGeometry.all(8),
-                child: buildFormField("Username"),
+                child: buildFormField(validateNotEmpty,updateCallback, "Username"),
               ),
               Padding(
                 padding: EdgeInsetsGeometry.all(8),
-                child: buildFormField("Password",obscure: true),
+                child: buildFormField(validateNotEmpty,updateCallback, "Password", obscure: true),
               ),
               Padding(
                 padding: EdgeInsetsGeometry.all(8),
-                child: buildFormField("Retype password",obscure: true),
+                child: buildFormField(
+                  validateNotEmpty,updateCallback,
+                  "Retype password",
+                  obscure: true,
+                ),
               ),
             ],
           ),

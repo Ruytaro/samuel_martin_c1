@@ -3,6 +3,7 @@ import 'package:samuel_martin_c1/utils/notifications.dart';
 import 'package:samuel_martin_c1/widgets/padding.dart';
 import '../widgets/buttons.dart';
 import '../widgets/forms.dart';
+import '../services/image.dart';
 import '../utils/validators.dart';
 import 'dart:collection';
 
@@ -17,7 +18,8 @@ class _RegisterState extends State<Register> {
   final Map<String, String> _values = HashMap();
   bool _verified = false;
   final _formKey = GlobalKey<FormState>();
-
+  String? avatarPath;
+  final _galleryPicker = GalleryService();
   final _value = "title";
 
   void createUser() {
@@ -34,7 +36,13 @@ class _RegisterState extends State<Register> {
     }
   }
 
-  void uploadAvatar() {}
+  void uploadAvatar() async {
+    final path = await _galleryPicker.selectPhoto();
+    if (path == null) return;
+    setState(() {
+      avatarPath = path;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +73,7 @@ class _RegisterState extends State<Register> {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Text("Pronoum: "),
-                        SizedBox.fromSize(size: const Size(50, 0)),
+                        SizedBox.fromSize(size: const Size(40, 0)),
                         Text("He"),
                         Radio(value: 'He'),
                         SizedBox.fromSize(size: const Size(10, 0)),
@@ -86,17 +94,17 @@ class _RegisterState extends State<Register> {
                   validator: validateStrongPassword,
                 ),
                 myFormField(updateCallback, "Retype password", obscure: true),
-                edgePadding(
-                  Row(
-                    children: [
-                      Text("Set avatar"),
-                      ElevatedButton(
-                        onPressed: uploadAvatar,
-                        child: Text("Upload picture"),
-                      ),
-                    ],
-                  ),
-                ),
+                if (avatarPath == null)
+                  edgePadding( Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text("Set avatar"),
+                        myElevatedButton(uploadAvatar, Text("Upload")),
+                      ],
+                    ),
+                  )
+                else
+                 edgePadding(Image.network(avatarPath!)),
                 myElevatedButton(createUser, Text('Create account')),
               ],
             ),

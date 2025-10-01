@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class User {
   String username;
   String password;
-  late Image? avatar;
+  late String? avatar;
   late int? age;
 
 

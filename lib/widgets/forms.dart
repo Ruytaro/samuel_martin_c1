@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:samuel_martin_c1/widgets/padding.dart';
 import '../utils/validators.dart';
 
 Widget myFormField(
@@ -7,7 +8,7 @@ Widget myFormField(
   bool obscure = false,
   validator = validateNotEmpty,
 }) {
-  return TextFormField(
+  return edgePadding( TextFormField(
     obscureText: obscure,
     onChanged: (value) => updateCallback(label, value),
     validator: (value) => validator(label, value),
@@ -16,5 +17,5 @@ Widget myFormField(
       border: OutlineInputBorder(),
       constraints: BoxConstraints(maxWidth: 300),
     ),
-  );
+  ));
 }

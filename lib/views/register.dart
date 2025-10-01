@@ -59,55 +59,63 @@ class _RegisterState extends State<Register> {
         backgroundColor: colorScheme.primary,
       ),
       body: SingleChildScrollView(
-        child: Center(
-          child: Form(
-            key: _formKey,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Center(
-                  child: RadioGroup(
-                    onChanged: (value) => {},
-                    groupValue: _value,
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text("Pronoum: "),
-                        SizedBox.fromSize(size: const Size(40, 0)),
-                        Text("He"),
-                        Radio(value: 'He'),
-                        SizedBox.fromSize(size: const Size(10, 0)),
-                        Text("She"),
-                        Radio(value: 'She'),
-                        SizedBox.fromSize(size: const Size(10, 0)),
-                        Text("They"),
-                        Radio(value: 'They'),
-                      ],
-                    ),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Center(
+                child: RadioGroup(
+                  onChanged: (value) => {},
+                  groupValue: _value,
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text("Pronoum: "),
+                      SizedBox.fromSize(size: const Size(40, 0)),
+                      Text("He"),
+                      Radio(value: 'He'),
+                      SizedBox.fromSize(size: const Size(10, 0)),
+                      Text("She"),
+                      Radio(value: 'She'),
+                      SizedBox.fromSize(size: const Size(10, 0)),
+                      Text("They"),
+                      Radio(value: 'They'),
+                    ],
                   ),
                 ),
-                myFormField(updateCallback, "Username"),
-                myFormField(
-                  updateCallback,
-                  "Password",
-                  obscure: true,
-                  validator: validateStrongPassword,
+              ),
+              myFormField(updateCallback, "Username"),
+              myFormField(
+                updateCallback,
+                "Password",
+                obscure: true,
+                validator: validateStrongPassword,
+              ),
+              TextFormField(
+                onChanged: (value) => updateCallback("Password2", value),
+                validator: (value) => isEqualTo(value!, _values["Password"]),
+                obscureText: true,
+                decoration: InputDecoration(
+                  labelText: "Retype password",
+                  border: OutlineInputBorder(),
+                  constraints: BoxConstraints(maxWidth: 300),
                 ),
-                myFormField(updateCallback, "Retype password", obscure: true),
-                if (avatarPath == null)
-                  edgePadding( Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text("Set avatar"),
-                        myElevatedButton(uploadAvatar, Text("Upload")),
-                      ],
-                    ),
-                  )
-                else
-                 edgePadding(Image.network(avatarPath!)),
-                myElevatedButton(createUser, Text('Create account')),
-              ],
-            ),
+              ),
+              if (avatarPath == null)
+                edgePadding(
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text("Set avatar"),
+                      myElevatedButton(uploadAvatar, Text("Upload")),
+                    ],
+                  ),
+                )
+              else
+                edgePadding(Image.network(avatarPath!)),
+              myElevatedButton(createUser, Text('Create account')),
+            ],
           ),
         ),
       ),

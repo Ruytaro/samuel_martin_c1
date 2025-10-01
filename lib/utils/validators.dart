@@ -17,6 +17,13 @@ String? validateStrongPassword(String label, String? value) {
   return null;
 }
 
+String? isEqualTo(String pass, pass2) {
+  if (pass.compareTo(pass2) == 0){
+    return null;
+  }
+  return "Passwords don't match";
+}
+
 bool isSecurePassword(String password) {
   bool hasUppercase = password.contains(RegExp(r'[A-Z]'));
   bool hasDigits = password.contains(RegExp(r'[0-9]'));

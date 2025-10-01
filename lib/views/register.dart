@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:samuel_martin_c1/utils/notifications.dart';
 import 'package:samuel_martin_c1/widgets/padding.dart';
+import '../widgets/buttons.dart';
 import '../widgets/forms.dart';
 import '../utils/validators.dart';
 import 'dart:collection';
@@ -33,6 +34,8 @@ class _RegisterState extends State<Register> {
     }
   }
 
+  void uploadAvatar() {}
+
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
@@ -42,48 +45,61 @@ class _RegisterState extends State<Register> {
         color: colorScheme.onPrimary,
       ),
     );
-
     return Scaffold(
       appBar: AppBar(
         title: Text('Register', style: textTheme.titleLarge),
         backgroundColor: colorScheme.primary,
       ),
-      body: Center(
-        child: Form(
-          key: _formKey,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Center(
-                child: RadioGroup(
-                  onChanged: (value) => {},
-                  groupValue: _value,
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
+      body: SingleChildScrollView(
+        child: Center(
+          child: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Center(
+                  child: RadioGroup(
+                    onChanged: (value) => {},
+                    groupValue: _value,
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text("Pronoum: "),
+                        SizedBox.fromSize(size: const Size(50, 0)),
+                        Text("He"),
+                        Radio(value: 'He'),
+                        SizedBox.fromSize(size: const Size(10, 0)),
+                        Text("She"),
+                        Radio(value: 'She'),
+                        SizedBox.fromSize(size: const Size(10, 0)),
+                        Text("They"),
+                        Radio(value: 'They'),
+                      ],
+                    ),
+                  ),
+                ),
+                myFormField(updateCallback, "Username"),
+                myFormField(
+                  updateCallback,
+                  "Password",
+                  obscure: true,
+                  validator: validateStrongPassword,
+                ),
+                myFormField(updateCallback, "Retype password", obscure: true),
+                edgePadding(
+                  Row(
                     children: [
-                      Text("Pronoum: "),
-                      SizedBox.fromSize(size: const Size(50, 0)),
-                      Text("He"),
-                      Radio(value: 'He'),
-                      SizedBox.fromSize(size: const Size(10, 0)),
-                      Text("She"),
-                      Radio(value: 'She'),
-                      SizedBox.fromSize(size: const Size(10, 0)),
-                      Text("They"),
-                      Radio(value: 'They'),
+                      Text("Set avatar"),
+                      ElevatedButton(
+                        onPressed: uploadAvatar,
+                        child: Text("Upload picture"),
+                      ),
                     ],
                   ),
                 ),
-              ),
-              paddedFormField(updateCallback, "Username"),
-              paddedFormField(updateCallback, "Password", obscure: true,validator: validateStrongPassword),
-              paddedFormField(updateCallback, "Retype password", obscure: true),
-              customPadding(Text("Image")),
-              ElevatedButton(
-                onPressed: createUser,
-                child: Text('Create account'),
-              ),
-            ],
+                myElevatedButton(createUser, Text('Create account')),
+              ],
+            ),
           ),
         ),
       ),

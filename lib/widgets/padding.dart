@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-Padding customPadding(Widget child) {
+Padding edgePadding(Widget child) {
   return Padding(
     padding: EdgeInsetsGeometry.all(8),
     child: child);

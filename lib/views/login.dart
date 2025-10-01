@@ -21,6 +21,13 @@ class LoginScreenState extends State<LoginScreen> {
   var _verified = false;
   final _formKey = GlobalKey<FormState>();
 
+  void _loadRegisterScreen() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const Register()),
+    );
+  }
+
   @override
   void initState() {
     super.initState();
@@ -82,15 +89,10 @@ class LoginScreenState extends State<LoginScreen> {
                 padding: const EdgeInsets.all(10.0),
                 child: Image.asset('images/logo.png', width: 300, height: 300),
               ),
-              paddedFormField(updateCallback, "Username"),
-              paddedFormField(updateCallback, "Password", obscure: true),
-              paddedButton(checkLogin, Text("Login")),
-              paddedButton(() {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const Register()),
-                );
-              }, Text('Register')),
+              myFormField(updateCallback, "Username"),
+              myFormField(updateCallback, "Password", obscure: true),
+              myElevatedButton(checkLogin, Text("Login")),
+              myElevatedButton(_loadRegisterScreen, Text('Register')),
             ],
           ),
         ),

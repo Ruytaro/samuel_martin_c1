@@ -3,7 +3,7 @@ import 'package:samuel_martin_c1/widgets/padding.dart';
 import '../utils/validators.dart';
 
 Widget myFormField(
-  updateCallback,
+  Function updateCallback,
   String label, {
   bool obscure = false,
   validator = validateNotEmpty,

@@ -92,28 +92,22 @@ class _RegisterState extends State<Register> {
                 obscure: true,
                 validator: validateStrongPassword,
               ),
-              TextFormField(
-                onChanged: (value) => updateCallback("Password2", value),
-                validator: (value) => isEqualTo(value!, _values["Password"]),
-                obscureText: true,
-                decoration: InputDecoration(
-                  labelText: "Retype password",
-                  border: OutlineInputBorder(),
-                  constraints: BoxConstraints(maxWidth: 300),
+              edgePadding(
+                TextFormField(
+                  onChanged: (value) => updateCallback("Password2", value),
+                  validator: (value) => isEqualTo(value!, _values["Password"]),
+                  obscureText: true,
+                  decoration: InputDecoration(
+                    labelText: "Retype password",
+                    border: OutlineInputBorder(),
+                    constraints: BoxConstraints(maxWidth: 300),
+                  ),
                 ),
               ),
-              if (avatarPath == null)
-                edgePadding(
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text("Set avatar"),
-                      myElevatedButton(uploadAvatar, Text("Upload")),
-                    ],
-                  ),
-                )
-              else
-                edgePadding(Image.network(avatarPath!)),
+              if (avatarPath != null) edgePadding(Image.network(avatarPath!)),
+              edgePadding(
+                myElevatedButton(uploadAvatar, Text("Upload avatar")),
+              ),
               myElevatedButton(createUser, Text('Create account')),
             ],
           ),

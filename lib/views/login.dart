@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:samuel_martin_c1/widgets/buttons.dart';
+import 'package:samuel_martin_c1/widgets/drawer.dart';
+import 'package:samuel_martin_c1/widgets/padding.dart';
 import '../services/user_manager.dart';
 import '../utils/notifications.dart';
 import 'profile.dart';
@@ -72,6 +74,7 @@ class LoginScreenState extends State<LoginScreen> {
     );
 
     return Scaffold(
+      drawer: MyDrawer(),
       appBar: AppBar(
         title: Padding(
           padding: const EdgeInsets.all(5.0),
@@ -91,8 +94,8 @@ class LoginScreenState extends State<LoginScreen> {
               ),
               myFormField(updateCallback, "Username"),
               myFormField(updateCallback, "Password", obscure: true),
-              myElevatedButton(checkLogin, Text("Login")),
-              myElevatedButton(_loadRegisterScreen, Text('Register')),
+              edgePadding(myElevatedButton(checkLogin, Text("Login"))),
+              edgePadding(myElevatedButton(_loadRegisterScreen, Text('Register'))),
             ],
           ),
         ),

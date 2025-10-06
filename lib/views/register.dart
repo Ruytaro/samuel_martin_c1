@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:samuel_martin_c1/utils/notifications.dart';
-import 'package:samuel_martin_c1/widgets/padding.dart';
+import '../utils/notifications.dart';
+import '../widgets/padding.dart';
 import '../widgets/buttons.dart';
 import '../widgets/forms.dart';
 import '../services/image.dart';
@@ -20,7 +20,6 @@ class _RegisterState extends State<Register> {
   final _formKey = GlobalKey<FormState>();
   String? avatarPath;
   final _galleryPicker = GalleryService();
-  final _value = "title";
 
   void createUser() {
     _verified = true;
@@ -65,22 +64,27 @@ class _RegisterState extends State<Register> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Center(
-                child: RadioGroup(
-                  onChanged: (value) => {},
-                  groupValue: _value,
+                child: RadioGroup<String>(
+                  groupValue: _values['pronoum'],
+                  onChanged: (String? value) {
+                    setState(() {
+                      _values['pronoum'] = value!;
+                    });
+                  },
                   child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text("Pronoum: "),
-                      SizedBox.fromSize(size: const Size(40, 0)),
-                      Text("He"),
-                      Radio(value: 'He'),
-                      SizedBox.fromSize(size: const Size(10, 0)),
-                      Text("She"),
-                      Radio(value: 'She'),
-                      SizedBox.fromSize(size: const Size(10, 0)),
-                      Text("They"),
-                      Radio(value: 'They'),
+                    children: <Widget>[
+                      edgePadding(Text("Pronoum")),
+                      SizedBox(width: 10),
+                      leftPadding(Text("He")),
+                      Radio(value: "He"),
+                      leftPadding(Text("She")),
+                      Radio(value: "She"),
+                      leftPadding(Text("They")),
+                      Radio(value: "They"),
+                      leftPadding(Text("Any")),
+                      Radio(value: "Any"),
                     ],
                   ),
                 ),
@@ -95,7 +99,7 @@ class _RegisterState extends State<Register> {
               edgePadding(
                 TextFormField(
                   onChanged: (value) => updateCallback("Password2", value),
-                  validator: (value) => isEqualTo(value!, _values["Password"]),
+                  validator: (value) => isEqualTo(_values["Password"], value),
                   obscureText: true,
                   decoration: InputDecoration(
                     labelText: "Retype password",
@@ -104,9 +108,29 @@ class _RegisterState extends State<Register> {
                   ),
                 ),
               ),
-              if (avatarPath != null) edgePadding(Image.network(avatarPath!)),
+              (avatarPath != null)
+                  ? edgePadding(Image.network(avatarPath!, scale: .33))
+                  : edgePadding(
+                      Image.asset('images/avatar.jpg', width: 250, height: 250),
+                    ),
               edgePadding(
                 myElevatedButton(uploadAvatar, Text("Upload avatar")),
+              ),
+              myFormField(updateCallback, "Age", validator: validateNumber),
+              DropdownButton<String>(
+                items: <String>['Huesca', 'Teruel', 'Zaragoza'].map((
+                  String province,
+                ) {
+                  return DropdownMenuItem<String>(
+                    value: province,
+                    child: Text(province),
+                  );
+                }).toList(),
+                onChanged: (String? value) {
+                  setState(() {
+                     _values['province']=value!;
+                  });
+                },
               ),
               myElevatedButton(createUser, Text('Create account')),
             ],

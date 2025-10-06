@@ -1,4 +1,4 @@
-import 'package:image_picker/image_picker.dart' show ImagePicker, XFile, ImageSource, CameraDevice;
+import 'package:image_picker/image_picker.dart';
 
 class GalleryService {
   final ImagePicker _picker = ImagePicker();

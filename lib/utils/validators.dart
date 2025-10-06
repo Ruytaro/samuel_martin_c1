@@ -17,11 +17,31 @@ String? validateStrongPassword(String label, String? value) {
   return null;
 }
 
-String? isEqualTo(String pass, pass2) {
-  if (pass.compareTo(pass2) == 0){
-    return null;
+String? validateNumber(String label, String? value) {
+  if (value == null || value.isEmpty) {
+    return 'Please enter $label';
   }
-  return "Passwords don't match";
+  if (!isNumber(value)) {
+    return 'Check $label to be a number';
+  }
+  return null;
+}
+
+String? isEqualTo(String? pass, String? pass2) {
+  if (pass2 == null) {
+    return 'Type the password again';
+  }
+  if (pass == null) {
+    return 'You need to type the pass twice';
+  }
+  if (pass2.compareTo(pass) != 0) {
+    return "Passwords don't match";
+  }
+  return null;
+}
+
+bool isNumber(String value) {
+  return int.tryParse(value) != null;
 }
 
 bool isSecurePassword(String password) {

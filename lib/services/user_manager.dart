@@ -6,15 +6,15 @@ class UserManager {
   final List<User> _users = [];
   User? _currentUser;
   User? get currentUser => _currentUser;
-  
+
   UserManager._internal();
 
   factory UserManager() {
     return _manager;
   }
-  
-  void register(String username, String password) {
-    _users.add(User(username: username, password: password));
+
+  void register(User user) {
+    _users.add(user);
   }
 
   bool authenticate(String username, String password) {

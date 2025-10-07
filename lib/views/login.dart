@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:samuel_martin_c1/models/user.dart';
 import 'package:samuel_martin_c1/widgets/buttons.dart';
 import 'package:samuel_martin_c1/widgets/drawer.dart';
 import 'package:samuel_martin_c1/widgets/padding.dart';
@@ -33,7 +34,7 @@ class LoginScreenState extends State<LoginScreen> {
   @override
   void initState() {
     super.initState();
-    UserManager().register("admin", "admin");
+    UserManager().register(User(username: "admin", password: "admin"));
   }
 
   void checkLogin() {
@@ -95,7 +96,9 @@ class LoginScreenState extends State<LoginScreen> {
               myFormField(updateCallback, "Username"),
               myFormField(updateCallback, "Password", obscure: true),
               edgePadding(myElevatedButton(checkLogin, Text("Login"))),
-              edgePadding(myElevatedButton(_loadRegisterScreen, Text('Register'))),
+              edgePadding(
+                myElevatedButton(_loadRegisterScreen, Text('Register')),
+              ),
             ],
           ),
         ),

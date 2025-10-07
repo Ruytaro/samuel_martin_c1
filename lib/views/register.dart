@@ -1,4 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:samuel_martin_c1/models/user.dart';
+import 'package:samuel_martin_c1/services/user_manager.dart';
+import 'package:samuel_martin_c1/widgets/images.dart';
 import '../utils/notifications.dart';
 import '../widgets/padding.dart';
 import '../widgets/buttons.dart';
@@ -18,7 +24,7 @@ class _RegisterState extends State<Register> {
   final Map<String, String> _values = HashMap();
   bool _verified = false;
   final _formKey = GlobalKey<FormState>();
-  String? avatarPath;
+  XFile? avatar;
   final _galleryPicker = GalleryService();
 
   void createUser() {
@@ -26,6 +32,15 @@ class _RegisterState extends State<Register> {
     if (!_formKey.currentState!.validate()) {
       Notifications.showError(context, "Review the form");
     }
+    UserManager().register(
+      User(
+        username: _values['Username']!,
+        password: _values['Password']!,
+        age: int.tryParse(_values['Age']!),
+        avatar: avatar!,
+      ),
+    );
+    Notifications.showMessage(context, "User created succesfully");
   }
 
   void updateCallback(String label, String value) {
@@ -36,10 +51,10 @@ class _RegisterState extends State<Register> {
   }
 
   void uploadAvatar() async {
-    final path = await _galleryPicker.selectPhoto();
-    if (path == null) return;
+    final photo = await _galleryPicker.selectPhoto();
+    if (photo == null) return;
     setState(() {
-      avatarPath = path;
+      avatar = photo;
     });
   }
 
@@ -108,29 +123,36 @@ class _RegisterState extends State<Register> {
                   ),
                 ),
               ),
-              (avatarPath != null)
-                  ? edgePadding(Image.network(avatarPath!, scale: .33))
-                  : edgePadding(
-                      Image.asset('images/avatar.jpg', width: 250, height: 250),
-                    ),
+              (avatar != null)
+                  ? edgePadding(myImage(avatar!, 150))
+                  : edgePadding(Image.asset('images/avatar.png', width: 150)),
               edgePadding(
                 myElevatedButton(uploadAvatar, Text("Upload avatar")),
               ),
               myFormField(updateCallback, "Age", validator: validateNumber),
-              DropdownButton<String>(
-                items: <String>['Huesca', 'Teruel', 'Zaragoza'].map((
-                  String province,
-                ) {
-                  return DropdownMenuItem<String>(
-                    value: province,
-                    child: Text(province),
-                  );
-                }).toList(),
-                onChanged: (String? value) {
-                  setState(() {
-                     _values['province']=value!;
-                  });
-                },
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text('Province:'),
+                  DropdownButton<String>(
+                    value: _values['province'],
+                    items: <String>['Huesca', 'Teruel', 'Zaragoza'].map((
+                      String province,
+                    ) {
+                      return DropdownMenuItem<String>(
+                        value: province,
+                        child: Text(province),
+                      );
+                    }).toList(),
+                    onChanged: (String? value) {
+                      if (value != null) {
+                        setState(() {
+                          _values['province'] = value!;
+                        });
+                      }
+                    },
+                  ),
+                ],
               ),
               myElevatedButton(createUser, Text('Create account')),
             ],

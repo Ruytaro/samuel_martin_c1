@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:samuel_martin_c1/models/user.dart';
@@ -124,8 +122,8 @@ class _RegisterState extends State<Register> {
                 ),
               ),
               (avatar != null)
-                  ? edgePadding(myImage(avatar!, 150))
-                  : edgePadding(Image.asset('images/avatar.png', width: 150)),
+                  ? edgePadding(myImageFile(avatar!, 150))
+                  : edgePadding(myImageAsset('images/avatar.png', 150)),
               edgePadding(
                 myElevatedButton(uploadAvatar, Text("Upload avatar")),
               ),
@@ -147,7 +145,7 @@ class _RegisterState extends State<Register> {
                     onChanged: (String? value) {
                       if (value != null) {
                         setState(() {
-                          _values['province'] = value!;
+                          _values['province'] = value;
                         });
                       }
                     },

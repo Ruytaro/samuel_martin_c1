@@ -5,6 +5,7 @@ import 'package:samuel_martin_c1/widgets/drawer.dart';
 import 'package:samuel_martin_c1/widgets/padding.dart';
 import '../services/user_manager.dart';
 import '../utils/notifications.dart';
+import '../widgets/images.dart';
 import 'profile.dart';
 import 'register.dart';
 import '../widgets/forms.dart';
@@ -91,7 +92,7 @@ class LoginScreenState extends State<LoginScreen> {
             children: [
               Padding(
                 padding: const EdgeInsets.all(10.0),
-                child: Image.asset('images/logo.png', width: 300, height: 300),
+                child: myImageAsset('images/logo.png',300),
               ),
               myFormField(updateCallback, "Username"),
               myFormField(updateCallback, "Password", obscure: true),

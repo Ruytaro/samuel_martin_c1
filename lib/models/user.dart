@@ -1,16 +1,34 @@
-import 'package:image_picker/image_picker.dart';
-
 class User {
-  String username;
-  String password;
-  late XFile? avatar;
-  late int? age;
+  String? _username;
+  String? _password;
+  late String avatar;
+  late int age;
+  late String pronoum;
+  late String province;
 
+  User(
+    String username,
+    String password, {
+    this.avatar = "assets/images/avatar.png",
+    this.age = 33,
+    this.pronoum = "Any",
+    this.province = "Huesca",
+  }) {
+    _username = username;
+    _password = password;
+  }
 
-  User({required this.username, required this.password, this.avatar,  this.age});
-  
-  set setAvatar(XFile avatar) => this.avatar = avatar;
-  set setAge(int age) => this.age = age;
-  XFile? get getAvatar => avatar;
-  int? get getAge => age;
+  String get getAvatar => avatar;
+  int get getAge => age;
+
+  bool checkLogin(String name, String pass) {
+    if (_username == name) {
+      return _isPasswordRight(pass);
+    }
+    return false;
+  }
+
+  bool _isPasswordRight(String pass) {
+    return pass == _password;
+  }
 }

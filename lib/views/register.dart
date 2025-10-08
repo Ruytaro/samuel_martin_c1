@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:samuel_martin_c1/models/user.dart';
 import 'package:samuel_martin_c1/services/user_manager.dart';
 import 'package:samuel_martin_c1/widgets/images.dart';
@@ -22,9 +21,10 @@ class _RegisterState extends State<Register> {
   final Map<String, String> _values = HashMap();
   bool _verified = false;
   final _formKey = GlobalKey<FormState>();
-  XFile? avatar;
+  String? avatar;
   final _galleryPicker = GalleryService();
-
+  String _province = 'Huesca';
+  String _pronoum = 'Any';
   void createUser() {
     _verified = true;
     if (!_formKey.currentState!.validate()) {
@@ -32,9 +32,11 @@ class _RegisterState extends State<Register> {
     }
     UserManager().register(
       User(
-        username: _values['Username']!,
-        password: _values['Password']!,
-        age: int.tryParse(_values['Age']!),
+        _values['Username']!,
+        _values['Password']!,
+        pronoum: _pronoum,
+        province: _province,
+        age: int.parse(_values['Age']!),
         avatar: avatar!,
       ),
     );
@@ -48,8 +50,16 @@ class _RegisterState extends State<Register> {
     }
   }
 
-  void uploadAvatar() async {
+  void _uploadAvatar() async {
     final photo = await _galleryPicker.selectPhoto();
+    if (photo == null) return;
+    setState(() {
+      avatar = photo;
+    });
+  }
+
+  void _takePhoto() async {
+    final photo = await _galleryPicker.takePhoto();
     if (photo == null) return;
     setState(() {
       avatar = photo;
@@ -78,10 +88,10 @@ class _RegisterState extends State<Register> {
             children: [
               Center(
                 child: RadioGroup<String>(
-                  groupValue: _values['pronoum'],
+                  groupValue: _pronoum,
                   onChanged: (String? value) {
                     setState(() {
-                      _values['pronoum'] = value!;
+                      _pronoum = value!;
                     });
                   },
                   child: Row(
@@ -123,17 +133,27 @@ class _RegisterState extends State<Register> {
               ),
               (avatar != null)
                   ? edgePadding(myImageFile(avatar!, 150))
-                  : edgePadding(myImageAsset('images/avatar.png', 150)),
-              edgePadding(
-                myElevatedButton(uploadAvatar, Text("Upload avatar")),
+                  : edgePadding(
+                      Image.asset('assets/images/avatar.png', width: 150),
+                    ),
+
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  edgePadding(
+                    myElevatedButton(_uploadAvatar, Text("Upload avatar")),
+                  ),
+                  edgePadding(myElevatedButton(_takePhoto, Text("Take Photo"))),
+                ],
               ),
+
               myFormField(updateCallback, "Age", validator: validateNumber),
               Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text('Province:'),
+                  edgePadding(Text('Province:')),
                   DropdownButton<String>(
-                    value: _values['province'],
+                    value: _province,
                     items: <String>['Huesca', 'Teruel', 'Zaragoza'].map((
                       String province,
                     ) {
@@ -145,7 +165,7 @@ class _RegisterState extends State<Register> {
                     onChanged: (String? value) {
                       if (value != null) {
                         setState(() {
-                          _values['province'] = value;
+                          _province = value;
                         });
                       }
                     },

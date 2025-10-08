@@ -5,7 +5,6 @@ import 'package:samuel_martin_c1/widgets/drawer.dart';
 import 'package:samuel_martin_c1/widgets/padding.dart';
 import '../services/user_manager.dart';
 import '../utils/notifications.dart';
-import '../widgets/images.dart';
 import 'profile.dart';
 import 'register.dart';
 import '../widgets/forms.dart';
@@ -35,7 +34,7 @@ class LoginScreenState extends State<LoginScreen> {
   @override
   void initState() {
     super.initState();
-    UserManager().register(User(username: "admin", password: "admin"));
+    UserManager().register(User("admin", "admin"));
   }
 
   void checkLogin() {
@@ -84,23 +83,25 @@ class LoginScreenState extends State<LoginScreen> {
         ),
         backgroundColor: colorScheme.primary,
       ),
-      body: Center(
-        child: Form(
-          key: _formKey,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: myImageAsset('images/logo.png',300),
-              ),
-              myFormField(updateCallback, "Username"),
-              myFormField(updateCallback, "Password", obscure: true),
-              edgePadding(myElevatedButton(checkLogin, Text("Login"))),
-              edgePadding(
-                myElevatedButton(_loadRegisterScreen, Text('Register')),
-              ),
-            ],
+      body: SingleChildScrollView(
+        child: Center(
+          child: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Image.asset('assets/images/logo.png',width: 300,),
+                ),
+                myFormField(updateCallback, "Username"),
+                myFormField(updateCallback, "Password", obscure: true),
+                edgePadding(myElevatedButton(checkLogin, Text("Login"))),
+                edgePadding(
+                  myElevatedButton(_loadRegisterScreen, Text('Register')),
+                ),
+              ],
+            ),
           ),
         ),
       ),

@@ -19,7 +19,7 @@ class UserManager {
 
   bool authenticate(String username, String password) {
     for (var user in _users) {
-      if (user.username == username && user.password == password) {
+      if( user.checkLogin(username, password)) {
         _currentUser = user;
         return true;
       }

@@ -5,7 +5,7 @@ class UserManager {
 
   final List<User> _users = [];
   User? _currentUser;
-  User? get currentUser => _currentUser;
+  User get getCurrentUser => _currentUser!;
 
   UserManager._internal();
 

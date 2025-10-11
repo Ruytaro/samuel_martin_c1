@@ -30,7 +30,7 @@ class _RegisterState extends State<Register> {
     if (!_formKey.currentState!.validate()) {
       Notifications.showError(context, "Review the form");
     }
-    UserManager().register(
+    if (UserManager().register(
       User(
         _values['Username']!,
         _values['Password']!,
@@ -39,8 +39,11 @@ class _RegisterState extends State<Register> {
         age: int.parse(_values['Age']!),
         avatar: avatar!,
       ),
-    );
-    Notifications.showMessage(context, "User created succesfully");
+    )) {
+      Notifications.showMessage(context, "User created succesfully");
+    } else {
+      Notifications.showError(context, "User already exists");
+    }
   }
 
   void updateCallback(String label, String value) {

@@ -1,9 +1,11 @@
+import 'dart:collection';
+
 import '../models/user.dart';
 
 class UserManager {
   static final UserManager _manager = UserManager._internal();
 
-  final List<User> _users = [];
+  final Map<String, User> _users = HashMap();
   User? _currentUser;
   User get getCurrentUser => _currentUser!;
 
@@ -13,16 +15,27 @@ class UserManager {
     return _manager;
   }
 
-  void register(User user) {
-    _users.add(user);
+  bool register(User user) {
+    final name = user.username!;
+    if (_users.containsKey(name)) {
+      return false;
+    }
+    _users[name] = user;
+    return true;
+  }
+
+  void logOut(){
+    _currentUser=null;
   }
 
   bool authenticate(String username, String password) {
-    for (var user in _users) {
-      if( user.checkLogin(username, password)) {
-        _currentUser = user;
-        return true;
-      }
+    if (!_users.containsKey(username)) {
+      return false;
+    }
+    User user = _users[username]!;
+    if (user.checkLogin(username, password)) {
+      _currentUser = user;
+      return true;
     }
     return false;
   }

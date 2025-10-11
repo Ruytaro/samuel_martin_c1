@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:samuel_martin_c1/models/user.dart';
+import 'package:samuel_martin_c1/views/secondary.dart';
 import 'package:samuel_martin_c1/widgets/buttons.dart';
 import 'package:samuel_martin_c1/widgets/drawer.dart';
 import 'package:samuel_martin_c1/widgets/padding.dart';
 import '../services/user_manager.dart';
 import '../utils/notifications.dart';
-import 'profile.dart';
 import 'register.dart';
 import '../widgets/forms.dart';
 import 'dart:collection';
@@ -47,7 +47,7 @@ class LoginScreenState extends State<LoginScreen> {
         Notifications.showMessage(context, "Login successful");
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const Profile()),
+          MaterialPageRoute(builder: (context) => const Secondary()),
         );
       } else {
         Notifications.showError(context, "Invalid username or password");

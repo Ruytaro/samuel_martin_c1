@@ -24,7 +24,7 @@ class _RegisterState extends State<Register> {
   String? avatar;
   final _galleryPicker = GalleryService();
   String _province = 'Huesca';
-  String _pronoum = 'Any';
+  String _pronoum = 'He';
   void createUser() {
     _verified = true;
     if (!_formKey.currentState!.validate()) {
@@ -41,6 +41,7 @@ class _RegisterState extends State<Register> {
       ),
     )) {
       Notifications.showMessage(context, "User created succesfully");
+      Navigator.pop(context);
     } else {
       Notifications.showError(context, "User already exists");
     }

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../models/user.dart';
 import '../services/user_manager.dart';
 import '../widgets/images.dart';
+import '../widgets/drawer.dart';
 
 
 class Profile extends StatefulWidget {
@@ -22,6 +23,7 @@ class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: MyDrawer(),
       appBar: AppBar(title: const Text('Profile')),
       body: SingleChildScrollView(
         child: Center(

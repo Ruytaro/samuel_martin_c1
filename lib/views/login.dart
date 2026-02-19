@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:samuel_martin_c1/models/user.dart';
-import 'package:samuel_martin_c1/views/secondary.dart';
+import 'package:samuel_martin_c1/services/view_notifier.dart';
 import 'package:samuel_martin_c1/widgets/buttons.dart';
-import 'package:samuel_martin_c1/widgets/drawer.dart';
 import 'package:samuel_martin_c1/widgets/padding.dart';
 import '../services/user_manager.dart';
 import '../utils/notifications.dart';
-import 'register.dart';
 import '../widgets/forms.dart';
 import 'dart:collection';
 
@@ -25,10 +24,7 @@ class LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
 
   void _loadRegisterScreen() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const Register()),
-    );
+    context.read<ViewNotifier>().goToRegister();
   }
 
   @override
@@ -45,10 +41,7 @@ class LoginScreenState extends State<LoginScreen> {
         _values["Password"]!,
       )) {
         Notifications.showMessage(context, "Login successful");
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const Secondary()),
-        );
+        context.read<ViewNotifier>().goToSecondary();
       } else {
         Notifications.showError(context, "Invalid username or password");
       }
@@ -75,7 +68,6 @@ class LoginScreenState extends State<LoginScreen> {
     );
 
     return Scaffold(
-      drawer: MyDrawer(),
       appBar: AppBar(
         title: Padding(
           padding: const EdgeInsets.all(5.0),

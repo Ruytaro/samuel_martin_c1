@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 import '../services/user_manager.dart';
-import '../views/profile.dart';
+import '../services/view_notifier.dart';
 
 class MyDrawer extends StatefulWidget {
   const MyDrawer({super.key});
@@ -21,16 +22,15 @@ class _MyDrawerState extends State<MyDrawer> {
             title: Text("LogOut"),
             onTap: () {
               UserManager().logOut();
-              Navigator.pop(context);
-              Navigator.pop(context);
+              context.read<ViewNotifier>().goToLogin();
             },
           ),
           ListTile(
             title: Text("Profile"),
-            onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const Profile()),
-            ),
+            onTap: () {
+              context.read<ViewNotifier>().goToProfile();
+              Navigator.pop(context);
+            },
           ),
           ListTile(
             title: Text("Exit"),

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:samuel_martin_c1/widgets/buttons.dart';
 import 'package:samuel_martin_c1/widgets/drawer.dart';
+import 'package:samuel_martin_c1/services/view_notifier.dart';
 
 import '../services/user_manager.dart';
 import '../models/user.dart';
@@ -38,6 +40,6 @@ class _SecondaryState extends State<Secondary> {
 
   void logOut() {
     UserManager().logOut();
-    Navigator.pop(context);
+    context.read<ViewNotifier>().goToLogin();
   }
 }

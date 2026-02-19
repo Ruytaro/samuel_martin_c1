@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:samuel_martin_c1/models/user.dart';
 import 'package:samuel_martin_c1/services/user_manager.dart';
+import 'package:samuel_martin_c1/services/view_notifier.dart';
 import 'package:samuel_martin_c1/widgets/images.dart';
 import '../utils/notifications.dart';
 import '../widgets/padding.dart';
@@ -41,7 +43,7 @@ class _RegisterState extends State<Register> {
       ),
     )) {
       Notifications.showMessage(context, "User created succesfully");
-      Navigator.pop(context);
+      context.read<ViewNotifier>().goToLogin();
     } else {
       Notifications.showError(context, "User already exists");
     }

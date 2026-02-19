@@ -28,6 +28,10 @@ class UserManager {
     _currentUser=null;
   }
 
+  bool isLoggedIn() {
+    return _currentUser != null;
+  }
+
   bool authenticate(String username, String password) {
     if (!_users.containsKey(username)) {
       return false;

@@ -34,8 +34,10 @@ class _MyDrawerState extends State<MyDrawer> {
           ),
           ListTile(
             title: Text("Exit"),
-            onTap: () =>
-                SystemChannels.platform.invokeMethod('SystemNavigator.pop'),
+            onTap: () {
+              UserManager().logOut();
+              SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+            },
           ),
         ],
       ),
